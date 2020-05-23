@@ -1,7 +1,7 @@
 <template>
     <div class="VideoPlayer">
         <center>
-            <vue-audio id="audio-player" :html5="true" :src="sFileURL" :autoplay="true" ></vue-audio>
+            <mini-audio id="audio-player" :html5="true" :src="sFileURL" :autoplay="true" ></mini-audio>
         </center>
         <br>
     </div>
