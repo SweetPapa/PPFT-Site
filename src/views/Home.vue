@@ -6,11 +6,13 @@
     Currently Playing: {{sTitle}} - {{sArtist}} - {{sAlbum}}
     <playerWidget :sFileURL="sURL"> </playerWidget>
     </div>
+
+    
   
     <br>
       <div v-if="jAlbums.length > 0">
         <div v-for="songs in jAlbums[0].songs" v-bind:key="songs.URL" v-on:click='applySong(songs.URL, songs.Title, songs.Artist, jAlbums[0].albumTitle)'>
-          Song Info - Title: {{songs.Title}} Artist: {{songs.Artist}} - Click to Play!
+          <audioTile :sTitle="songs.Title" :sArtist="songs.Artist" /> 
         </div>
       </div>
   </div>
@@ -19,6 +21,7 @@
 <script>
 import { albumsCollection } from "../js/firebaseConfig";
 import playerWidget from "../components/videoplayer"
+import audioTile from "../components/audioTileGrid"
 import store from "../store"
 export default {
   name: "Home",
@@ -28,7 +31,8 @@ export default {
     };
   },
   components: {
-    playerWidget
+    playerWidget,
+    audioTile
   },
   computed: {
       sURL : () => {
