@@ -1,27 +1,42 @@
 <template>
-    <div class="VideoPlayer" v-on:click="checkIfPlaying()">
+    <div class="VideoPlayer">
         <center>
-            <mini-audio id="audio-player" :src="sFileURL" ></mini-audio>
+            <vue-audio id="audio-player" :html5="true" :src="sFileURL" :autoplay="true" ></vue-audio>
         </center>
         <br>
     </div>
 </template>
 
 <script>
+import vuexStore from "../store"
+
 export default {
     props : {
         sFileURL : String
         },
+        data:() => {
+            return {
+                
+            }
+        },
+        computed:{
+            isPlaying: () => {return vuexStore.state.filePlaying}
+        },
         methods:{
             checkIfPlaying(){
-                const auidoElement = document.getElementById('audio-player');
-                console.log(auidoElement.dataset)
-                if (auidoElement.playing == true){
-                    console.log("Something is Playing Already, We Should Stop It...")
-                } else {
-                    console.log("Starting Playing")
+                let listOfPlayers = this.$parent.$children
+                for (let players in listOfPlayers){
+                    console.log(players)
+                    let currentPlayer = listOfPlayers[players]
+                        if (currentPlayer.playing == true){
+                            console.log("Something Appears to be Playing Already")
+                            vuexStore.commit("setPlayingState",true)
+                        } else if (currentPlayer.playing == false && this.isPlaying == false){
+                            return
+                        } else {
+                            vuexStore.commit("setPlayingState",false)
+                        }
                 }
-
             }
         }
     }

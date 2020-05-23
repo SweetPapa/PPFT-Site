@@ -2,10 +2,15 @@
   <div class="home">
     <div>Pizza Party for Two</div>
     <br>
+    <div v-if="sURL != ''">
+    Currently Playing: {{sTitle}} - {{sArtist}} - {{sAlbum}}
+    <playerWidget :sFileURL="sURL"> </playerWidget>
+    </div>
+  
+    <br>
       <div v-if="jAlbums.length > 0">
-        <div v-for="songs in jAlbums[0].songs" v-bind:key="songs.URL">
-          Song Info - Title: {{songs.Title}} Artist: {{songs.Artist}}
-          <playerWidget :sFileURL="songs.URL"> </playerWidget>
+        <div v-for="songs in jAlbums[0].songs" v-bind:key="songs.URL" v-on:click='applySong(songs.URL, songs.Title, songs.Artist, jAlbums[0].albumTitle)'>
+          Song Info - Title: {{songs.Title}} Artist: {{songs.Artist}} - Click to Play!
         </div>
       </div>
   </div>
@@ -14,7 +19,7 @@
 <script>
 import { albumsCollection } from "../js/firebaseConfig";
 import playerWidget from "../components/videoplayer"
-
+import store from "../store"
 export default {
   name: "Home",
   data: () => {
@@ -25,22 +30,43 @@ export default {
   components: {
     playerWidget
   },
+  computed: {
+      sURL : () => {
+      return store.state.sURL
+    },
+      sTitle : () => {
+      return store.state.sTitle
+    },
+      sAlbum : () => {
+      return store.state.sAlbum
+    },
+      sArtist : () => {
+      return store.state.sArtist
+    },
+  },
+  methods:{
+    applySong(sURL, sTitle, sArtist, sAlbum){
+      let aData = {
+        sURL : sURL,
+        sTitle : sTitle,
+        sArtist: sArtist,
+        sAlbum: sAlbum
+      }
+      store.commit("setSong", aData)
+    }
+  },
   async created() {
     // Let us load all the songs from the database
-    
-
-  
     let albumsRef = albumsCollection;
     await albumsRef.get().then((albums) => {
         albums.forEach((album) => {
-
           let songsRef = albumsRef.doc(album.id);
           let newAlbum = album.data()
-
           let newAlbumObj = {
             albumTitle: newAlbum["Album Title"],
             songs: []
           }
+          
           songsRef.collection("Songs").get()
             .then((songs) => {
                 songs.forEach((song) => {

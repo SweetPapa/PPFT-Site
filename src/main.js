@@ -6,6 +6,7 @@ import VueAudio from 'vue-audio-better'
 
 Vue.use(VueAudio)
 
+
 Vue.config.productionTip = false
 
 new Vue({
