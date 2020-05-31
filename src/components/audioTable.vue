@@ -12,7 +12,7 @@
       </md-table-row>
 
       <md-table-row v-for="songs in jAlbums[0].songs" v-bind:key="songs.URL" v-on:click='applySong(songs.URL, songs.Title, songs.Artist, jAlbums[0].albumTitle)'>
-        <md-table-cell md-numeric>/</md-table-cell>
+        <md-table-cell md-numeric>{{songs.id}}</md-table-cell>
         <md-table-cell>{{songs.Title}}</md-table-cell>
         <md-table-cell>{{songs.Artist}}</md-table-cell>
         <md-table-cell>{{jAlbums[0].albumTitle}}</md-table-cell>
@@ -81,6 +81,7 @@ export default {
             .then((songs) => {
                 songs.forEach((song) => {
                   let jsong = song.data()
+                  jsong.id = song.id
                   newAlbumObj.songs.push(jsong)
                 });
               })
