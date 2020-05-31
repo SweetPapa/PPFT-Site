@@ -2,7 +2,7 @@
 <template>
   <div>
     
-    <md-card v-if="sURL != ''">
+    <md-card>
         <md-card-header-text>
           <div class="md-title">{{sTitle}}</div>
           <div class="md-subhead">{{sArtist}}</div>
@@ -13,7 +13,7 @@
           <img src="../assets/demo.png" alt="Album Cover">
         </md-card-media>
 
-        <playerWidget :sFileURL="sURL"> </playerWidget>
+        <playerWidget class="playerWidget" :sFileURL="sURL"> </playerWidget>
 
     </md-card>
   </div>
@@ -26,6 +26,14 @@
     display: inline-block;
     vertical-align: top;
   }
+
+  .playerWidget {
+    position: inherit;
+    align-content: center;
+    left: -6px;
+    bottom: -8px;
+  }
+
 </style>
 
 <script>
